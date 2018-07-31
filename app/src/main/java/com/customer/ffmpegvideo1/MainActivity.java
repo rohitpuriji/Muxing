@@ -2,6 +2,7 @@ package com.customer.ffmpegvideo1;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.MediaCodec;
 import android.media.MediaExtractor;
@@ -28,7 +29,6 @@ import android.widget.VideoView;
 import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.util.HashMap;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private MediaRecorder mRecorder;
     MediaController mc ;
     private ProgressDialog progress;
+    private String videoPath_muxer;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -53,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
 
         btnRecord = findViewById(R.id.btnRecord);
         videoView = findViewById(R.id.videoView);
+
+        videoPath_muxer=Environment.getExternalStorageDirectory() +"/"+"output.mp4";
 
         mc = new MediaController(this);
         mc.setAnchorView(videoView);
@@ -67,9 +70,11 @@ public class MainActivity extends AppCompatActivity {
 
         getPermissionToRecordAudio();
 
+
         btnRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (!btnRecord.getText().toString().equalsIgnoreCase("play"))
                 startPlayingVideo();
             }
         });
@@ -216,7 +221,6 @@ public class MainActivity extends AppCompatActivity {
         try {
 
             String outputFile;
-            String videoPath_muxer=Environment.getExternalStorageDirectory() +"/"+(System.currentTimeMillis()+"output.mp4");
 
             try {
 
@@ -328,7 +332,10 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("video size","size = "+getDuration(new File(videoPath_muxer)));
 
                 progress.dismiss();
-                Toast.makeText(getApplicationContext(),"Clip edited....",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),"Clip editing done....",Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(MainActivity.this,PlayVideo.class);
+                startActivity(intent);
+
 
             } catch (IOException e) {
                 progress.dismiss();
