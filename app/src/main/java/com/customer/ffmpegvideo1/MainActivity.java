@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private String accPath = Environment.getExternalStorageDirectory() + File.separator + "audio.mp3";
     private MediaRecorder mRecorder;
     MediaController mc ;
-    private ProgressDialog progress;
+
     private String videoPath_muxer;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -62,11 +62,6 @@ public class MainActivity extends AppCompatActivity {
         mc.setMediaPlayer(videoView);
         videoView.setMediaController(mc);
 
-
-        progress = new ProgressDialog(this);
-        progress.setMessage("Muxing in progress...");
-        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progress.setIndeterminate(true);
 
         getPermissionToRecordAudio();
 
